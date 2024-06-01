@@ -1,10 +1,9 @@
 {
   "name": "mesto-project",
   "version": "1.0.0",
-  "description": "temp",
+  "description": "educational project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
     "dev": "webpack serve"
   },
