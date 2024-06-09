@@ -17,6 +17,8 @@ const validationConfig = {
 const editProfileButton = document.querySelector(".profile__edit-button");
 const editPopup = document.querySelector(".popup.popup_type_edit");
 const profileInfo = document.querySelector(".profile__info");
+const profileTitle = profileInfo.querySelector(".profile__title");
+const profileDescription = profileInfo.querySelector(".profile__description");
 
 const editForm = document.forms["edit-profile"];
 const editNameInput = editForm.elements.name;
@@ -43,8 +45,8 @@ const placesList = document.querySelector(".places__list");
 
 // edit popup
 function openEditProfilePopup() {
-    editNameInput.value = profileInfo.querySelector(".profile__title").textContent;
-    editDescriptionInput.value = profileInfo.querySelector(".profile__description").textContent;
+    editNameInput.value = profileTitle.textContent;
+    editDescriptionInput.value = profileDescription.textContent;
 
     clearValidation(editPopup, validationConfig);
     openPopup(editPopup);
@@ -62,8 +64,8 @@ function onEditFormSubmit(evt) {
 
     updateMyInfo(name, description)
         .then(() => {
-            profileInfo.querySelector(".profile__title").textContent = name;
-            profileInfo.querySelector(".profile__description").textContent = description;
+            profileTitle.textContent = name;
+            profileDescription.textContent = description;
         })
         .catch(err => console.log(err))
         .finally(() => {
@@ -169,8 +171,8 @@ Promise.all([
     getMyInfo(),
     getInitialCards()
 ]).then(([myInfo, initialCards]) => {
-    profileInfo.querySelector(".profile__title").textContent = myInfo.name;
-    profileInfo.querySelector(".profile__description").textContent = myInfo.about;
+    profileTitle.textContent = myInfo.name;
+    profileDescription.textContent = myInfo.about;
 
     updateProfileAvatar(myInfo.avatar);
 

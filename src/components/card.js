@@ -5,34 +5,31 @@ export function createCard(cardData, template, user, deleteCallback, likeCardCal
     const placeCardImage = placeCard.querySelector(".card__image");
     const cardLike = placeCard.querySelector(".card__like");
     const cardLikeButton = cardLike.querySelector(".card__like-button");
+    const cardLikeCounter = cardLike.querySelector('.card__like-counter');
+    const cardDeleteButton = placeCard.querySelector('.card__delete-button');
 
     placeCardImage.src = cardData.link;
     placeCardImage.alt = cardData.name;
     placeCard.querySelector(".card__title").textContent = cardData.name;
 
     if (cardData.owner._id !== user._id) {
-        placeCard.querySelector('.card__delete-button').remove();
+        cardDeleteButton.remove();
     } else {
-        placeCard
-            .querySelector(".card__delete-button")
-            .addEventListener("click", () => {
-                deleteCallback(placeCard, cardData._id);
-            });
+        cardDeleteButton.addEventListener("click", () => {
+            deleteCallback(placeCard, cardData._id, cardLikeButton, cardLikeCounter);
+        });
     }
 
     if (cardData.likes.some(like => like._id === user._id)) {
         cardLikeButton.classList.add('card__like-button_is-active');
     }
-    cardLike.querySelector('.card__like-counter').textContent = cardData.likes.length;
+    cardLikeCounter.textContent = cardData.likes.length;
 
-    placeCard
-        .querySelector(".card__like-button")
-        .addEventListener("click", () => {
-            likeCardCallback(placeCard, cardData._id);
-        });
-    placeCard
-        .querySelector(".card__image")
-        .addEventListener("click", imageClickCallback);
+    cardLikeButton.addEventListener("click", () => {
+        likeCardCallback(placeCard, cardData._id);
+    });
+
+    placeCardImage.addEventListener("click", imageClickCallback);
 
     return placeCard;
 }
@@ -45,10 +42,7 @@ export function deleteCard(cardElement, id) {
         .catch(error => console.log(error));
 }
 
-export function likeCard(cardElement, cardId) {
-    const likeButton = cardElement.querySelector(".card__like-button");
-    const likeCounter = cardElement.querySelector('.card__like-counter');
-
+export function likeCard(cardElement, cardId, likeButton, likeCounter) {
     if (likeButton.classList.contains("card__like-button_is-active")) {
         dislikeCardApi(cardId)
             .then((cardData) => {

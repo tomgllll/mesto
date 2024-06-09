@@ -60,6 +60,10 @@ export function enableValidation(config) {
 
 export function clearValidation(form, config) {
     const buttonElement = form.querySelector(config.submitButtonSelector);
+    const inputList = Array.from(form.querySelectorAll(config.inputSelector));
+    inputList.forEach((inputElement) => {
+        hideInputError(form, inputElement, config);
+    });
 
     buttonElement.disabled = true;
     buttonElement.classList.add(config.inactiveButtonClass);
